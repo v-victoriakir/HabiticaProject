@@ -57,7 +57,7 @@ class MainPage:
         return self
 
     @allure.step("Проверка кол-во символов введенного пароля")
-    def check_if_required_fields_not_filled(self):
+    def check_if_password_is_short(self):
         browser.element('.input-error').should(be.visible)
         browser.element('.input-error').should(have.text("Password must be 8 characters or more."))
         return self

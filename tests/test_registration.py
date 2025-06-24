@@ -11,7 +11,7 @@ def generate_valid_username():
     pattern = re.compile(r'^[a-z0-9_-]+$')
     while True:
         username = fake.user_name()
-        if pattern.match(username):
+        if pattern.match(username) and len(username) == 35:
             return username
 
 
@@ -61,4 +61,4 @@ def test_validation_on_password_length():
     practice_form.fill_password(password)
     practice_form.fill_password_again(password)
     practice_form.submit_form()
-    practice_form.check_if_required_fields_not_filled()
+    practice_form.check_if_password_is_short()
