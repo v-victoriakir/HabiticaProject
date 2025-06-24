@@ -5,9 +5,9 @@ from selene import browser, have, be
 class MainPage:
     def __init__(self):
         self.username = browser.element("#usernameInput")
-        self.email = browser.element('input[placeholder="Электронная почта"]')
-        self.password = browser.element('input[placeholder="Пароль"]')
-        self.repeat_password = browser.element('input[placeholder="Подтвердите пароль"]')
+        self.email = browser.element('input[placeholder="Email"]')
+        self.password = browser.element('input[placeholder="Password"]')
+        self.repeat_password = browser.element('input[placeholder="Confirm Password"]')
         self.welcome_modal = browser.element("#avatar-modal___BV_modal_body_")
         # self.display_name = browser.element('input[placeholder="Новое отображаемое имя"]')
 
@@ -38,13 +38,13 @@ class MainPage:
 
     @allure.step("Отправка формы")
     def submit_form(self):
-        browser.element('//button[contains(text(), "Регистрация")]').click()
+        browser.element('//button[contains(text(), "Sign Up")]').click()
         return self
 
     @allure.step("Проверка регистрации")
     def registered_welcome_modal(self):
         browser.with_(timeout=15).element("#avatar-modal___BV_modal_body_").should(be.visible)
-        self.welcome_modal.should(have.text("Добро пожаловать в"))
+        self.welcome_modal.should(have.text("Welcome to"))
         # self.display_name.should(have.exact_text(username))  ---> не пойму как сделать проверку на то, чтобы после
         # регистрации в welcome окне отображаемое username соответствовало тому, которое было введено на этапе
         # регистрации
@@ -53,11 +53,11 @@ class MainPage:
     @allure.step("Проверка наличия валидации на незаполненных обязательных полях")
     def check_if_required_fields_not_filled(self):
         browser.element('.notifications').should(be.visible)
-        browser.element('.notifications').should(have.text("Подтверждение пароля не совпадает с паролем."))
+        browser.element('.notifications').should(have.text("Password confirmation doesn't match password."))
         return self
 
     @allure.step("Проверка кол-во символов введенного пароля")
     def check_if_required_fields_not_filled(self):
         browser.element('.input-error').should(be.visible)
-        browser.element('.input-error').should(have.text("Пароль должен состоять из 8 или более символов."))
+        browser.element('.input-error').should(have.text("Password must be 8 characters or more."))
         return self
