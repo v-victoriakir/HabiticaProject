@@ -9,9 +9,10 @@ def add_screenshot(browser):
 
 
 # логи
-def add_logs(browser):
-    log = "".join(f'{text}\n' for text in browser.driver.get_log(log_type='browser'))
-    allure.attach(log, 'browser_logs', AttachmentType.TEXT, '.log')
+# def add_logs(browser):
+#     log = "".join(f'{text}\n' for text in browser.driver.get_log(log_type='browser'))
+#     allure.attach(log, 'browser_logs', AttachmentType.TEXT, '.log')
+#     пока убрала, т.к. получаю ошибку  AttributeError: 'WebDriver' object has no attribute 'get_log'
 
 
 # html-код страницы
