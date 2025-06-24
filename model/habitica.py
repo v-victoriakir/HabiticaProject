@@ -18,23 +18,23 @@ class MainPage:
         return self
 
     @allure.step("Ввод логина")
-    def fill_username(self, value):
-        self.username.send_keys(value)
+    def fill_username(self, username):
+        self.username.send_keys(username)
         return self
 
     @allure.step("Ввод эл. почты")
-    def fill_email(self, value):
-        self.email.send_keys(value)
+    def fill_email(self, email):
+        self.email.send_keys(email)
         return self
 
     @allure.step("Ввод пароля")
-    def fill_password(self, value):
-        self.password.send_keys(value)
+    def fill_password(self, password):
+        self.password.send_keys(password)
         return self
 
     @allure.step("Повторный ввод пароля")
-    def fill_password_again(self, value):
-        self.repeat_password.send_keys(value)
+    def fill_password_again(self, password):
+        self.repeat_password.send_keys(password)
         return self
 
     @allure.step("Отправка формы")
@@ -46,10 +46,19 @@ class MainPage:
     def registered_welcome_modal(self):
         browser.with_(timeout=15).element("#avatar-modal___BV_modal_body_").should(be.visible)
         self.welcome_modal.should(have.text("Добро пожаловать в"))
-        # self.display_name.should(have.exact_text(username))
+        # self.display_name.should(have.exact_text(username))  ---> не пойму как сделать проверку на то, чтобы после
+        # регистрации в welcome окне отображаемое username соответствовало тому, которое было введено на этапе
+        # регистрации
         return self
 
     @allure.step("Проверка наличия валидации на незаполненных обязательных полях")
     def check_if_required_fields_not_filled(self):
-        browser.element("#userForm").should(have.attribute("class").value("was-validated"))
+        browser.element('.notifications').should(be.visible)
+        browser.element('.notifications').should(have.text("Подтверждение пароля не совпадает с паролем."))
+        return self
+
+    @allure.step("Проверка кол-во символов введенного пароля")
+    def check_if_required_fields_not_filled(self):
+        browser.element('.input-error').should(be.visible)
+        browser.element('.input-error').should(have.text("Пароль должен состоять из 8 или более символов."))
         return self
