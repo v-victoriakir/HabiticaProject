@@ -11,7 +11,6 @@ class MainPage:
         self.welcome_modal = browser.element("#avatar-modal___BV_modal_body_")
         # self.display_name = browser.element('input[placeholder="Новое отображаемое имя"]')
 
-
     @allure.step("Открыть главную страницу")
     def open(self):
         browser.open("/")
