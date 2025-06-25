@@ -16,21 +16,10 @@ def load_env():
 
 @pytest.fixture(scope="function", autouse=True)
 def browser_config(request):
-    options = Options()
-    # форсим chrome на открытие в ENG локали
-    options.add_experimental_option(
-        'prefs', {'intl.accept_languages': 'en,en_US'}
-    )
-    driver = webdriver.Chrome(options=options)
-    browser.config.driver = driver
-
     browser.config.base_url = "https://habitica.com"
     browser.config.window_height = 2500
     browser.config.window_width = 1400
     browser.config.type_by_js = True
-
-    # Подключаем менеджер драйвера Хрома
-    # Здесь менеджер драйвера Хрома проверит версии и установит нужную.
 
     options = Options()
     selenoid_capabilities = {
@@ -50,6 +39,8 @@ def browser_config(request):
     driver = webdriver.Remote(
         command_executor=f"https://{selenoid_login}:{selenoid_pass}@{selenoid_url}/wd/hub",
         options=options)
+
+    browser.config.driver = driver
 
     yield
 
