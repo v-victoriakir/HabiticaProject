@@ -2,7 +2,7 @@ import re
 
 from faker import Faker
 
-from model.habitica import MainPage
+from model.pages.main_page import MainPage
 
 fake = Faker()
 
@@ -10,12 +10,10 @@ fake = Faker()
 def generate_valid_username():
     pattern = re.compile(r'^[a-z0-9_-]+$')
     while True:
-        username = fake.user_name()
-        if pattern.match(username) and len(username) == 35:
-            return username
+        username_part1 = fake.user_name()
+        username_part2 = fake.user_name()
+        return (username_part1 + username_part2)[0:20]  # ограничиваем длину username до 20 символов
 
-
-# здесь возник вопрос - возможно ли исключать генерацию username, которые уже заняты в системе?
 
 def test_form_submitted():
     username = generate_valid_username()
