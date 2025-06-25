@@ -10,7 +10,7 @@ def add_screenshot(browser):
 
 # логи
 def add_logs(browser):
-    log = browser.execute("getLog", {"type": 'browser'})["value"]
+    log = browser.driver.execute("getLog", {"type": 'browser'})["value"]
     allure.attach(log, 'browser_logs', AttachmentType.TEXT, '.log')
 
 
