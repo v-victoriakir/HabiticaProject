@@ -16,7 +16,7 @@ class LoginPage:
     def login_page_open(self):
         browser.open("/")
         self.login_button.click()
-        browser.element("form[action*='auth/local/login']").should(be.visible)
+        browser.element('//button[contains(text(), "Login")]').should(be.visible)
         return self
 
     @allure.step("Ввод username")

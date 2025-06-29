@@ -73,5 +73,5 @@ class MainPage:
     @allure.step("Проверка доступности формы логина")
     def check_if_login_button_works(self):
         self.login_button.click()
-        browser.element("form[action*='auth/local/login']").should(be.visible)
+        browser.element('//button[contains(text(), "Login")]').should(be.visible)
         return self
