@@ -8,6 +8,7 @@ class MainPage:
         self.email = browser.element('input[placeholder="Email"]')
         self.password = browser.element('input[placeholder="Password"]')
         self.repeat_password = browser.element('input[placeholder="Confirm Password"]')
+        self.signup_button = browser.element('//button[contains(text(), "Sign Up")]')
         self.welcome_modal = browser.element("#avatar-modal___BV_modal_body_")
         self.login_button = browser.element('//button[contains(text(), "Login")]')
         # self.display_name = browser.element('input[placeholder="Новое отображаемое имя"]')
@@ -39,7 +40,7 @@ class MainPage:
 
     @allure.step("Отправка формы")
     def submit_form(self):
-        browser.element('//button[contains(text(), "Sign Up")]').click()
+        self.signup_button.click()
         return self
 
     @allure.step("Проверка регистрации")
