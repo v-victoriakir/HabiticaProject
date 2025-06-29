@@ -43,7 +43,7 @@ class MainPage:
         self.signup_button.click()
         return self
 
-    @allure.step("Проверка регистрации")
+    @allure.step("Проверка успешной регистрации")
     def registered_welcome_modal(self):
         browser.with_(timeout=15).element("#avatar-modal___BV_modal_body_").should(be.visible)
         self.welcome_modal.should(have.text("Welcome to"))
@@ -51,6 +51,14 @@ class MainPage:
         # регистрации в welcome окне отображаемое username соответствовало тому, которое было введено на этапе
         # регистрации
         return self
+
+    @allure.step("Заполнение формы регистрации")
+    def fill_in_the_form(self):
+        self.fill_username()
+        self.fill_email()
+        self.fill_password()
+        self.fill_password_again()
+        self.submit_form()
 
     @allure.step("Проверка наличия валидации на незаполненных обязательных полях")
     def check_if_required_fields_not_filled(self):

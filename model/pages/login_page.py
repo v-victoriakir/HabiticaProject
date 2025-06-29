@@ -53,7 +53,26 @@ class LoginPage:
         self.submit_form()
         return self
 
+    @allure.step("Отправка формы через username c невалидным паролем")
+    def invalid_login_with_username(self, user: User):
+        self.fill_username(user.username)
+        self.fill_password(user.invalid_password)
+        self.submit_form()
+        return self
+
+    @allure.step("Отправка формы через email c невалидным паролем")
+    def invalid_login_with_email(self, user: User):
+        self.fill_username(user.email)
+        self.fill_password(user.invalid_password)
+        self.submit_form()
+        return self
+
     @allure.step("Проверка успешного логина")
     def login_checked(self, user: User):
         self.header.should(be.visible)
         self.header.should(have.text(user.username))
+
+    @allure.step("Проверка наличия валидации на некорректные username/password")
+    def validation_checked(self):
+        browser.element('.notifications').should(be.visible)
+        browser.element('.notifications').should(have.text("your email address / username or password is incorrect."))
