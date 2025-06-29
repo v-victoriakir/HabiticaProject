@@ -10,7 +10,7 @@ class MainPage:
         self.repeat_password = browser.element('input[placeholder="Confirm Password"]')
         self.signup_button = browser.element('//button[contains(text(), "Sign Up")]')
         self.welcome_modal = browser.element("#avatar-modal___BV_modal_body_")
-        self.login_button = browser.element('//button[contains(text(), "Login")]')
+        self.login_button = browser.element('a[href="/login"]')
         # self.display_name = browser.element('input[placeholder="Новое отображаемое имя"]')
 
     @allure.step("Открыть главную страницу")

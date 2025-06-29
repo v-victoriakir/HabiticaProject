@@ -6,10 +6,10 @@ from model.data.users import User
 
 class LoginPage:
     def __init__(self):
-        self.login_button = browser.element('//button[contains(text(), "Login")]')
+        self.login_button = browser.element('a[href="/login"]')
         self.username = browser.element("#usernameInput")
         self.password = browser.element("#passwordInput")
-        self.login_button = browser.element('//button[contains(text(), "Login")]')
+        self.login_button_to_submit = browser.element('//button[contains(text(), "Login")]')
         self.header = browser.element("#app-header")
 
     @allure.step("Открыть страницу логина")
@@ -36,7 +36,7 @@ class LoginPage:
 
     @allure.step("Отправка формы по кнопке")
     def submit_form(self):
-        self.login_button.click()
+        self.login_button_to_submit.click()
         return self
 
     @allure.step("Отправка формы через username")
