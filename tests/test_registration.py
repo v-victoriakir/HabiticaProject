@@ -34,7 +34,7 @@ def test_form_submitted():
     practice_form = MainPage()
     practice_form.open()
 
-    practice_form.fill_in_the_form()
+    practice_form.fill_in_the_form(username, email, password)
     practice_form.registered_welcome_modal()
 
 
@@ -63,7 +63,7 @@ def test_validation_on_invalid_long_username():
     practice_form = MainPage()
     practice_form.open()
 
-    practice_form.fill_in_the_form()
+    practice_form.fill_in_the_form(username, email, password)
     practice_form.check_if_username_is_long()
 
 
@@ -75,7 +75,7 @@ def test_validation_on_invalid_short_password():
     practice_form = MainPage()
     practice_form.open()
 
-    practice_form.fill_in_the_form()
+    practice_form.fill_in_the_form(username, email, password)
     practice_form.check_if_password_is_short()
 
 
