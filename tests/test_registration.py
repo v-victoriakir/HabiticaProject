@@ -14,6 +14,7 @@ def generate_valid_username():
         username_part2 = fake.user_name()
         return (username_part1 + username_part2)[0:20]  # ограничиваем длину username до 20 символов
 
+
 def generate_invalid_long_username():
     pattern = re.compile(r'^[a-z0-9_-]+$')
     while True:
@@ -54,6 +55,7 @@ def test_validation_on_required_fields():
     practice_form.submit_form()
     practice_form.check_if_required_fields_not_filled()
 
+
 def test_validation_on_invalid_username():
     username = generate_invalid_long_username()
     email = fake.email()
@@ -84,6 +86,7 @@ def test_validation_on_password_length():
     practice_form.fill_password_again(password)
     practice_form.submit_form()
     practice_form.check_if_password_is_short()
+
 
 def test_login_button_works():
     practice_form = MainPage()

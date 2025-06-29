@@ -1,6 +1,8 @@
 import allure
 from selene import browser, have, be
+
 from model.data.users import User
+
 
 class LoginPage:
     def __init__(self):
@@ -55,4 +57,3 @@ class LoginPage:
     def login_checked(self, user: User):
         self.header.should(be.visible)
         self.header.should(have.value(user.username))
-
