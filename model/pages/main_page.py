@@ -56,7 +56,13 @@ class MainPage:
         browser.element('.notifications').should(have.text("Password confirmation doesn't match password."))
         return self
 
-    @allure.step("Проверка кол-во символов введенного пароля")
+    @allure.step("Проверка кол-ва символов введенного username")
+    def check_if_username_is_long(self):
+        browser.element('.input-error').should(be.visible)
+        browser.element('.input-error').should(have.text("Usernames must be between 1 and 20 characters."))
+        return self
+
+    @allure.step("Проверка кол-ва символов введенного пароля")
     def check_if_password_is_short(self):
         browser.element('.input-error').should(be.visible)
         browser.element('.input-error').should(have.text("Password must be 8 characters or more."))
