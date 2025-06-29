@@ -52,13 +52,15 @@ class MainPage:
         # регистрации
         return self
 
-    @allure.step("Заполнение формы регистрации")
-    def fill_in_the_form(self):
-        self.fill_username()
-        self.fill_email()
-        self.fill_password()
-        self.fill_password_again()
-        self.submit_form()
+    # @allure.step("Заполнение формы регистрации")
+    # def fill_in_the_form(self):
+    #     self.fill_username()
+    #     self.fill_email()
+    #     self.fill_password()
+    #     self.fill_password_again()
+    #     self.submit_form()
+
+    # на потом подумать - чтобы использовать эту функцию, можно ли в users вынести конфиг по созданию фейковых вводных данных ?
 
     @allure.step("Проверка наличия валидации на незаполненных обязательных полях")
     def check_if_required_fields_not_filled(self):
