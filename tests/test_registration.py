@@ -85,3 +85,8 @@ def test_validation_on_password_length():
     practice_form.submit_form()
     practice_form.check_if_password_is_short()
 
+def test_login_button_works():
+    practice_form = MainPage()
+    practice_form.open()
+
+    practice_form.check_if_login_button_works()

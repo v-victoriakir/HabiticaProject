@@ -9,6 +9,7 @@ class MainPage:
         self.password = browser.element('input[placeholder="Password"]')
         self.repeat_password = browser.element('input[placeholder="Confirm Password"]')
         self.welcome_modal = browser.element("#avatar-modal___BV_modal_body_")
+        self.login_button = browser.element('//button[contains(text(), "Login")]')
         # self.display_name = browser.element('input[placeholder="Новое отображаемое имя"]')
 
     @allure.step("Открыть главную страницу")
@@ -66,4 +67,10 @@ class MainPage:
     def check_if_password_is_short(self):
         browser.element('.input-error').should(be.visible)
         browser.element('.input-error').should(have.text("Password must be 8 characters or more."))
+        return self
+
+    @allure.step("Проверка доступности формы логина")
+    def check_if_login_button_works(self):
+        self.login_button.click()
+        browser.element("#login-form").should(be.visible)
         return self
