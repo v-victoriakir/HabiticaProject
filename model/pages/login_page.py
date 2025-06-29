@@ -56,4 +56,4 @@ class LoginPage:
     @allure.step("Проверка успешного логина")
     def login_checked(self, user: User):
         self.header.should(be.visible)
-        self.header.should(have.value(user.username))
+        self.header.should(have.text(user.username))
