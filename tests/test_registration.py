@@ -31,15 +31,15 @@ def test_form_submitted():
     email = fake.email()
     password = fake.password(length=9)
 
-    practice_form = MainPage()
-    practice_form.open()
+    signup_form = MainPage()
+    signup_form.open()
 
-    practice_form.fill_username(username)
-    practice_form.fill_email(email)
-    practice_form.fill_password(password)
-    practice_form.fill_password_again([password])
-    practice_form.submit_form()
-    practice_form.registered_welcome_modal()
+    signup_form.fill_username(username)
+    signup_form.fill_email(email)
+    signup_form.fill_password(password)
+    signup_form.fill_password_again([password])
+    signup_form.submit_form()
+    signup_form.registered_welcome_modal()
 
 
 #   тест рабочий, но временно отключила, чтобы не регистрировать кучу юзеров в сервисе
@@ -49,14 +49,14 @@ def test_validation_on_required_fields():
     email = fake.email()
     password = fake.password(length=9)
 
-    practice_form = MainPage()
-    practice_form.open()
+    signup_form = MainPage()
+    signup_form.open()
 
-    practice_form.fill_username(username)
-    practice_form.fill_email(email)
-    practice_form.fill_password(password)
-    practice_form.submit_form()
-    practice_form.check_if_required_fields_not_filled()
+    signup_form.fill_username(username)
+    signup_form.fill_email(email)
+    signup_form.fill_password(password)
+    signup_form.submit_form()
+    signup_form.check_if_required_fields_not_filled()
 
 
 def test_validation_on_invalid_long_username():
@@ -64,14 +64,14 @@ def test_validation_on_invalid_long_username():
     email = fake.email()
     password = fake.password(length=9)
 
-    practice_form = MainPage()
-    practice_form.open()
+    signup_form = MainPage()
+    signup_form.open()
 
-    practice_form.fill_username(username)
-    practice_form.fill_email(email)
-    practice_form.fill_password(password)
-    practice_form.fill_password_again([password])
-    practice_form.check_if_username_is_long()
+    signup_form.fill_username(username)
+    signup_form.fill_email(email)
+    signup_form.fill_password(password)
+    signup_form.fill_password_again([password])
+    signup_form.check_if_username_is_long()
 
 
 def test_validation_on_invalid_short_password():
@@ -79,18 +79,18 @@ def test_validation_on_invalid_short_password():
     email = fake.email()
     password = fake.password(length=7)
 
-    practice_form = MainPage()
-    practice_form.open()
+    signup_form = MainPage()
+    signup_form.open()
 
-    practice_form.fill_username(username)
-    practice_form.fill_email(email)
-    practice_form.fill_password(password)
-    practice_form.fill_password_again([password])
-    practice_form.check_if_password_is_short()
+    signup_form.fill_username(username)
+    signup_form.fill_email(email)
+    signup_form.fill_password(password)
+    signup_form.fill_password_again([password])
+    signup_form.check_if_password_is_short()
 
 
 def test_login_button_works():
-    practice_form = MainPage()
-    practice_form.open()
+    signup_form = MainPage()
+    signup_form.open()
 
-    practice_form.check_if_login_button_works()
+    signup_form.check_if_login_button_works()
