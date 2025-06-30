@@ -26,20 +26,20 @@ def generate_invalid_long_username():
             return combined_username
 
 
-def test_form_submitted():
-    username = generate_valid_username()
-    email = fake.email()
-    password = fake.password(length=9)
-
-    signup_form = MainPage()
-    signup_form.open()
-
-    signup_form.fill_username(username)
-    signup_form.fill_email(email)
-    signup_form.fill_password(password)
-    signup_form.fill_password_again([password])
-    signup_form.submit_form()
-    signup_form.registered_welcome_modal()
+# def test_form_submitted():
+#     username = generate_valid_username()
+#     email = fake.email()
+#     password = fake.password(length=9)
+#
+#     signup_form = MainPage()
+#     signup_form.open()
+#
+#     signup_form.fill_username(username)
+#     signup_form.fill_email(email)
+#     signup_form.fill_password(password)
+#     signup_form.fill_password_again([password])
+#     signup_form.submit_form()
+#     signup_form.registered_welcome_modal()
 
 
 #   тест рабочий, но временно отключила, чтобы не регистрировать кучу юзеров в сервисе
