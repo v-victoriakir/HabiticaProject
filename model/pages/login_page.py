@@ -22,18 +22,18 @@ class LoginPage:
         return self
 
     @allure.step("Ввод username")
-    def fill_username(self, value):
-        self.username.send_keys(value)
+    def fill_username(self, habitica_username):
+        self.username.send_keys(habitica_username)
         return self
 
     @allure.step("Ввод email")
-    def fill_email(self, value):
-        self.username.send_keys(value)
+    def fill_email(self, habitica_email):
+        self.username.send_keys(habitica_email)
         return self
 
     @allure.step("Ввод пароля")
-    def fill_password(self, value):
-        self.password.send_keys(value)
+    def fill_password(self, habitica_password):
+        self.password.send_keys(habitica_password)
         return self
 
     @allure.step("Отправка формы по кнопке")
