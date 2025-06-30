@@ -6,8 +6,6 @@
 ```
 HabiticaProject/
 ├── model/                      # Page Objects
-│   ├──data
-│       ├──users.py
 │   ├──pages                    
 │       ├── login_page.py       # Страница авторизации
 │       └── main_page.py        # Главная страница

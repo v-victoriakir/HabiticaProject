@@ -1,7 +1,9 @@
+import os
+from faker import Faker
+fake = Faker()
+
 import allure
 from selene import browser, have, be
-
-from model.data.users import User
 
 
 class LoginPage:
@@ -40,37 +42,51 @@ class LoginPage:
         return self
 
     @allure.step("Отправка формы через username")
-    def login_with_username(self, user: User):
-        self.fill_username(user.username)
-        self.fill_password(user.password)
+    def login_with_username(self):
+        habitica_username = os.getenv("HABITICA_USERNAME")
+        habitica_password = os.getenv("HABITICA_PASSWORD")
+
+        self.fill_username(habitica_username)
+        self.fill_password(habitica_password)
         self.submit_form()
         return self
 
     @allure.step("Отправка формы через email")
-    def login_with_email(self, user: User):
-        self.fill_username(user.email)
-        self.fill_password(user.password)
+    def login_with_email(self):
+        habitica_email = os.getenv("HABITICA_EMAIL")
+        habitica_password = os.getenv("HABITICA_PASSWORD")
+
+        self.fill_username(habitica_email)
+        self.fill_password(habitica_password)
         self.submit_form()
         return self
 
     @allure.step("Отправка формы через username c невалидным паролем")
-    def invalid_login_with_username(self, user: User):
-        self.fill_username(user.username)
-        self.fill_password(user.invalid_password)
+    def invalid_login_with_username(self):
+        habitica_username = os.getenv("HABITICA_USERNAME")
+        random_password = fake.password(length=9)
+
+        self.fill_username(habitica_username)
+        self.fill_password(random_password)
         self.submit_form()
         return self
 
     @allure.step("Отправка формы через email c невалидным паролем")
-    def invalid_login_with_email(self, user: User):
-        self.fill_username(user.email)
-        self.fill_password(user.invalid_password)
+    def invalid_login_with_email(self):
+        habitica_email = os.getenv("HABITICA_EMAIL")
+        random_password = fake.password(length=9)
+
+        self.fill_username(habitica_email)
+        self.fill_password(random_password)
         self.submit_form()
         return self
 
     @allure.step("Проверка успешного логина")
-    def login_checked(self, user: User):
+    def login_checked(self):
+        habitica_username = os.getenv("HABITICA_USERNAME")
+
         self.header.should(be.visible)
-        self.header.should(have.text(user.username))
+        self.header.should(have.text(habitica_username))
 
     @allure.step("Проверка наличия валидации на некорректные username/password")
     def validation_checked(self):
