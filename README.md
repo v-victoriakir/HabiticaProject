@@ -3,6 +3,7 @@
 > [Ссылка на сайт Habitica](https://habitica.com)
 
 ## Структура проекта
+
 ```
 HabiticaProject/
 ├── model/                      # Page Objects

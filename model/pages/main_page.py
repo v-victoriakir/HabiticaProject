@@ -10,7 +10,7 @@ class MainPage:
         self.repeat_password = browser.element('input[placeholder="Confirm Password"]')
         self.signup_button = browser.element('//button[contains(text(), "Sign Up")]')
         self.welcome_modal = browser.element("#avatar-modal___BV_modal_body_")
-        self.login_button = browser.element('a[href="/login"]')
+        self.login_nav_button = browser.element('a[href="/login"]')
         # self.display_name = browser.element('input[placeholder="Новое отображаемое имя"]')
 
     @allure.step("Открыть главную страницу")
@@ -82,6 +82,6 @@ class MainPage:
 
     @allure.step("Проверка доступности формы логина")
     def check_if_login_button_works(self):
-        self.login_button.click()
+        self.login_nav_button.click()
         browser.element('//button[contains(text(), "Login")]').should(be.visible)
         return self

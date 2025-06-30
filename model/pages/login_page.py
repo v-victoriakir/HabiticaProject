@@ -1,24 +1,28 @@
 import os
-from faker import Faker
-fake = Faker()
 
+from faker import Faker
+
+fake = Faker()
+from dotenv import load_dotenv
 import allure
 from selene import browser, have, be
+
+load_dotenv()
 
 
 class LoginPage:
     def __init__(self):
-        self.login_button = browser.element('a[href="/login"]')
+        self.login_nav_button = browser.element('a[href="/login"]')
         self.username = browser.element("#usernameInput")
         self.password = browser.element("#passwordInput")
-        self.login_button_to_submit = browser.element('//button[contains(text(), "Login")]')
+        self.login_submit_button = browser.element('//button[contains(text(), "Login")]')
         self.header = browser.element("#app-header")
 
     @allure.step("Открыть страницу логина")
     def login_page_open(self):
         browser.open("/")
-        self.login_button.click()
-        browser.element('//button[contains(text(), "Login")]').should(be.visible)
+        self.login_nav_button.click()
+        self.login_submit_button.should(be.visible)
         return self
 
     @allure.step("Ввод username")
@@ -38,7 +42,7 @@ class LoginPage:
 
     @allure.step("Отправка формы по кнопке")
     def submit_form(self):
-        self.login_button_to_submit.click()
+        self.login_submit_button.click()
         return self
 
     @allure.step("Отправка формы через username")
