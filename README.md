@@ -48,7 +48,6 @@ HabiticaProject/
 - [x] Авторизация пользователя (успешная и неуспешная)
 - [x] Работа валидации в формах регистрации и авторизации
 
----
 
 ## Особенности фреймворка
 
@@ -97,7 +96,7 @@ HabiticaProject/
 
 ---
 
-## Интеграция с Jira
+### Интеграция с Jira
 
 > [Ссылка на проект в Jira](https://jira.autotests.cloud/browse/HOMEWORK-1477)
 
@@ -105,12 +104,12 @@ HabiticaProject/
 
 ---
 
-## Оповещение о результатах прогона тестов в Telegram
+### Оповещение о результатах прогона тестов в Telegram
 > [Ссылка на канал в Telegram](https://t.me/+lAeNRkltTRU0ZDIy)
 
 ![This is an image](media/images/telegram_report.png)
 
 ---
 
-## Пример видео прохождения UI-автотеста
+### Пример видео прохождения UI-автотеста
 ![autotest_gif](media/images/UI_autotest_example.gif)
