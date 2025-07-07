@@ -95,6 +95,8 @@ HabiticaProject/
 
 ![This is an image](media/images/allure_testops_testcases.png)
 
+---
+
 ### Интеграция с Jira
 
 > [Ссылка на проект в Jira](https://jira.autotests.cloud/browse/HOMEWORK-1477)
@@ -110,4 +112,4 @@ HabiticaProject/
 
 ---
 
-### Пример видео прохождения ui-автотеста
+### Пример видео прохождения UI-автотеста
