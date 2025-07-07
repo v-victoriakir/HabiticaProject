@@ -17,8 +17,8 @@ def load_env():
 @pytest.fixture(scope="function", autouse=True)
 def browser_config(request):
     browser.config.base_url = "https://habitica.com"
-    browser.config.window_height = 2500
-    browser.config.window_width = 1400
+    browser.config.window_height = 1080
+    browser.config.window_width = 1920
     browser.config.type_by_js = True
 
     options = Options()
