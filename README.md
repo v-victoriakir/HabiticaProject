@@ -7,6 +7,7 @@
 ---
 
 ## Проект реализован с использованием:
+
 <img src="media/icons/python-original.svg" width="50"> <img src="media/icons/pytest.png" width="50"> <img src="media/icons/selene.png" width="50"> <img src="media/icons/selenoid.png" width="50"> <img src="media/icons/jenkins.png" width="50"> <img src="media/icons/allure_report.png" width="50"> <img src="media/icons/allure_testops.png" width="50"> <img src="media/icons/jira.png" width="50"> <img src="media/icons/tg.png" width="50">
 
 - Язык: `Python`
@@ -22,6 +23,7 @@
 ---
 
 ## Структура проекта
+
 ```
 HabiticaProject/
 ├── model/                      # Page Objects
@@ -44,19 +46,21 @@ HabiticaProject/
 ## Список проверок, реализованных в автотестах:
 
 ### UI-тесты
+
 - [x] Регистрация пользователя (успешная и неуспешная)
 - [x] Авторизация пользователя (успешная и неуспешная)
 - [x] Работа валидации в формах регистрации и авторизации
 
-
 ## Особенности фреймворка
 
 ### Page Object Pattern
+
 - Использование паттерна Page Object для инкапсуляции селекторов и действий
 - Методы для проверки видимости элементов
 - Методы для взаимодействия с элементами (click, send_keys, open)
 
 ### Allure Reporting
+
 - Подробные шаги тестов
 - Скриншоты при падении тестов
 - Логи браузера
@@ -64,6 +68,7 @@ HabiticaProject/
 - Видео выполнения тестов
 
 ### Конфигурация
+
 - Поддержка разных окружений через переменные окружения
 - Настройка браузера через Selenoid
 - Возможность запуска в headless режиме
@@ -73,13 +78,17 @@ HabiticaProject/
 ## Allure отчет
 
 ### Общие результаты прохождения UI тестов
+
 ![This is an image](media/images/allure_report_overview.png)
+
 ### Список UI тест кейсов и пример отчета о прохождении теста
+
 ![This is an image](media/images/allure_behaviors.png)
 
 ---
 
 ## Полная статистика хранится в Allure TestOps
+
 > [Ссылка на проект в AllureTestOps](https://allure.autotests.cloud/project/4822/dashboards)
 
 ### Дашборд с общими показателями тестовых прогонов
@@ -105,6 +114,7 @@ HabiticaProject/
 ---
 
 ### Оповещение о результатах прогона тестов в Telegram
+
 > [Ссылка на канал в Telegram](https://t.me/+lAeNRkltTRU0ZDIy)
 
 ![This is an image](media/images/telegram_report.png)
@@ -112,4 +122,5 @@ HabiticaProject/
 ---
 
 ### Пример видео прохождения UI-автотеста
+
 ![autotest_gif](media/images/UI_autotest_example.gif)

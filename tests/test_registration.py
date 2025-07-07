@@ -12,7 +12,10 @@ def generate_valid_username():
     while True:
         username_part1 = fake.user_name()
         username_part2 = fake.user_name()
-        return (username_part1 + username_part2)[0:20]  # ограничиваем длину username до 20 символов
+        combined_username = (username_part1 + username_part2)
+        if len(combined_username) <= 20 and pattern.fullmatch(
+                combined_username):
+            return combined_username
 
 
 def generate_invalid_long_username():
@@ -40,6 +43,7 @@ def test_form_submitted():
     signup_form.fill_password_again([password])
     signup_form.submit_form()
     signup_form.registered_welcome_modal()
+
 
 def test_validation_on_required_fields():
     username = generate_valid_username()
