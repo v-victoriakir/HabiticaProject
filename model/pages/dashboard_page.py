@@ -4,11 +4,13 @@ from selene import browser, have, be
 
 class AddTaskButton:
     # --- Locators ---
-    DROPDOWN_ITEM = '.dropdown-item.d-flex.px-2.py-1'
+    ADD_TASK_BUTTON = '#create-task-btn'
+    DROPDOWN_TASK_ITEMS = '.dropdown-item.d-flex.px-2.py-1'
     MODAL_HEADER = '.task-purple-modal-headings'
     TASK_TITLE_INPUT = '[placeholder="Add a title"]'
+    CREATE_BTN = 'button'
+    TASKS_LIST = '.tasks-list'
     TASK_ITEM = '.task-item'
-    ADD_TASK_BUTTON = '#create-task-btn'
 
     def __init__(self):
         pass
@@ -21,26 +23,11 @@ class AddTaskButton:
 
     @property
     def dropdown_items(self):
-        return browser.all(self.DROPDOWN_ITEM)
+        return browser.all(self.DROPDOWN_TASK_ITEMS)
 
     @property
-    def habit_btn(self):
-        return self.dropdown_items.element_by(have.text('Habit'))
-
-    @property
-    def daily_btn(self):
-        return self.dropdown_items.element_by(have.text('Daily'))
-
-    @property
-    def to_do_btn(self):
-        return self.dropdown_items.element_by(have.text('To Do'))
-
-    @property
-    def reward_btn(self):
-        return self.dropdown_items.element_by(have.text('Reward'))
-
-    def modal_with_title(self, title):
-        return browser.all(self.MODAL_HEADER).element_by(have.text(title))
+    def modal_header(self):
+        return browser.all(self.MODAL_HEADER)
 
     @property
     def title_input(self):
@@ -61,25 +48,10 @@ class AddTaskButton:
         self.add_task_btn.click()
         self.dropdown_items.should(have.size_greater_than(0))
 
-    @allure.step("Open modal to create Habit")
-    def pick_habit(self):
-        self.habit_btn.click()
-        self.modal_with_title('Create Habit').should(be.visible)
-
-    @allure.step("Open modal to create Daily")
-    def pick_daily(self):
-        self.daily_btn.click()
-        self.modal_with_title('Create Daily').should(be.visible)
-
-    @allure.step("Open modal to create To Do")
-    def pick_to_do(self):
-        self.to_do_btn.click()
-        self.modal_with_title('Create To Do').should(be.visible)
-
-    @allure.step("Open modal to create Reward")
-    def pick_reward(self):
-        self.reward_btn.click()
-        self.modal_with_title('Create Reward').should(be.visible)
+    @allure.step('Open modal to create task: {task_type}')
+    def pick_task(self, task_type: str):
+        self.dropdown_items.element_by(have.text(task_type)).should(be.visible).click()
+        self.modal_header.element_by(have.exact_text(f'Create {task_type}')).should(be.visible)
 
     @allure.step("Add a title to the task")
     def name_a_task(self, value):
@@ -95,3 +67,41 @@ class AddTaskButton:
         self.tasks_items.with_(timeout=15).should(
             lambda elements: any(value in el.text for el in elements)
         )
+
+class ProfileMenu:
+    # --- Locators ---
+    PROFILE_MENU_TOGGLE = 'div.habitica-menu-dropdown[role="button"] div.habitica-menu-dropdown-toggle'
+    DROPDOWN_MENU_ITEMS = 'a.topbar-dropdown-item'
+    MENU_CONTAINER = 'div.habitica-menu-dropdown.dropdown.item-user'
+    DROPDOWN_MENU = 'div.dropdown-menu.dropdown-menu-right'
+
+    def __init__(self):
+        pass
+
+    # --- Element getters ---
+
+    @property
+    def profile_menu_toggle(self):
+        return browser.element(self.PROFILE_MENU_TOGGLE)
+
+    @property
+    def profile_menu_items(self):
+        return browser.all(self.DROPDOWN_MENU_ITEMS)
+
+    @allure.step("Open profile menu")
+    def open_profile_menu(self):
+        browser.element(self.MENU_CONTAINER).with_(timeout=10).should(be.present)
+        self.profile_menu_toggle.with_(timeout=10).should(be.visible)
+
+        try:
+            self.profile_menu_toggle.click()
+        except Exception:
+            browser.execute_script("arguments[0].click();", self.profile_menu_toggle())
+
+        browser.element(self.DROPDOWN_MENU).with_(timeout=5).should(be.visible)
+        self.profile_menu_items.should(have.size_greater_than(0))
+
+    @allure.step("Click on a menu item")
+    def click_menu_item(self, value: str):
+        self.profile_menu_items.element_by(have.text(value)).should(be.visible).click()
+
