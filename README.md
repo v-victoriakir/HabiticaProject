@@ -26,36 +26,36 @@
 
 ```
 HabiticaProject/
-├── model/                              # Page Objects
+├── model/                                      # Page Objects
 │   ├──api/
-│       ├── schemas                     # Схемы response/request
-│       ├── auth.py                     # Методы авторизации
-│       └── tasks.py                    # Методы управления задачами
+│       ├── schemas                             # Схемы response/request
+│       ├── auth.py                             # Методы авторизации
+│       └── tasks.py                            # Методы управления задачами
 │   └── ui/
 │        ├──mobile_pages/    
 │           ├── 
 │           └──
 │        └──web_pages/                 
-│           ├── dashboard_page.py       # Дашборд задач в аккаунте
-│           ├── login_page.py           # Страница авторизации
-│           └── main_page.py            # Главная страница
+│           ├── dashboard_page.py               # Дашборд задач в аккаунте
+│           ├── login_page.py                   # Страница авторизации
+│           └── main_page.py                    # Главная страница
 ├── tests/                              
-│       ├──api_test/                    # API Тесты
-│           ├── test_auth.py            # Тесты формы авторизации
-│           └── test_task_management.py # Тесты на управление задачами
-│       ├──mobile_tests/                # MOBILE Тесты
+│       ├──api_test/                            # API Тесты
+│           ├── test_auth.py                    # Тесты формы авторизации
+│           └── test_task_management.py         # Тесты на управление задачами
+│       ├──mobile_tests/                        # MOBILE Тесты
 │           ├── 
 │           └──
-│       └──ui.tests/                    # UI Тесты
-│           ├── conftest.py             # Конфигурация pytest
-│           ├── test_add_task.py        # Тесты на добавление задач 
-│           ├── test_login.py           # Тесты формы авторизации    
-│           └── test_registration.py    # Тесты формы регистрации
-├── utils/                              # Утилиты
-│   └── attach.py                       # Функции для Allure
-├── .env                                # Переменные окружения
-├── requirements.txt                    # Зависимости проекта
-└── pytest.ini                          # Конфигурация pytest
+│       └──ui.tests/                            # UI Тесты
+│           ├── conftest.py                     # Конфигурация pytest
+│           ├── test_add_task.py                # Тесты на добавление задач 
+│           ├── test_login.py                   # Тесты формы авторизации    
+│           └── test_registration.py            # Тесты формы регистрации
+├── utils/                                      # Утилиты
+│   └── attach.py                               # Функции для Allure
+├── .env                                        # Переменные окружения
+├── requirements.txt                            # Зависимости проекта
+└── pytest.ini                                  # Конфигурация pytest
 ```
 
 ---
