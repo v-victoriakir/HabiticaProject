@@ -51,11 +51,11 @@ HabiticaProject/
 │           ├── test_add_task.py        # Тесты на добавление задач 
 │           ├── test_login.py           # Тесты формы авторизации    
 │           └── test_registration.py    # Тесты формы регистрации
-├── utils/                      # Утилиты
-│   └── attach.py               # Функции для Allure
-├── .env                        # Переменные окружения
-├── requirements.txt            # Зависимости проекта
-└── pytest.ini                  # Конфигурация pytest
+├── utils/                              # Утилиты
+│   └── attach.py                       # Функции для Allure
+├── .env                                # Переменные окружения
+├── requirements.txt                    # Зависимости проекта
+└── pytest.ini                          # Конфигурация pytest
 ```
 
 ---
