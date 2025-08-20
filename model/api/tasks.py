@@ -1,6 +1,9 @@
 import allure
 from dotenv import load_dotenv
 
+from jsonschema import validate
+from model.api.schemas import schemas
+
 load_dotenv()
 
 class TasksAPI:
@@ -23,7 +26,9 @@ class TasksAPI:
             f"Failed to create the {task_text} task, got {response.status_code}\n"
             f"Response text: {response.text}"
         )
+        # validate(response.json(),schema=schemas.post_create_task)
         return response.json()['data']
+
 
     @allure.step("Getting a list of all user's tasks")
     def get_all_tasks(self):
@@ -34,7 +39,7 @@ class TasksAPI:
             f"Failed to get all tasks, got {response.status_code}\n"
             f"Response text: {response.text}"
         )
-        return response
+        return response.json()['data']
 
     @allure.step("Delete a task by ID")
     def delete_task_by_id(self, task_id):
@@ -45,4 +50,17 @@ class TasksAPI:
             f"Failed delete the task {task_id}, got {response.status_code}\n"
             f"Response text: {response.text}"
         )
+        # validate(response.json(),schema=schemas.delete_task)
+        return response
+
+    @allure.step("Move task to new position")
+    def move_task_to_position(self, task_id, new_position):
+        response = self.session.post(
+            url=f"{self.base_url}/tasks/{task_id}/move/to/{new_position}"
+        )
+        assert response.status_code == 200, (
+            f"Failed move the task {task_id} to the position {new_position}, got {response.status_code}\n"
+            f"Response text: {response.text}"
+        )
+        # validate(response.json(),schema=schemas.post_move_task)
         return response
