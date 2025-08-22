@@ -1,4 +1,5 @@
 import os
+
 import allure
 import requests
 
@@ -6,11 +7,12 @@ from jsonschema import validate
 from model.api.schemas import schemas
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 from faker import Faker
-fake = Faker()
 
+fake = Faker()
 
 
 class AuthAPI:

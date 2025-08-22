@@ -1,193 +1,204 @@
-from model.api.auth import AuthAPI
-from model.api.tasks import TasksAPI
-
 import pytest
 import allure
 from allure_commons.types import Severity
 
-from faker import Faker
-fake = Faker()
-
-def generate_random_title():
-    random_title = fake.sentence(nb_words=3).rstrip('.')
-    return random_title
-
 @allure.tag('API')
 @allure.feature("Task Operations")
-@allure.title('Verify Type of a created task')
 @allure.label('owner', 'Victoria K')
-@allure.severity(Severity.NORMAL)
-def test_task_creation_with_type_verification():
-    auth = AuthAPI()
-    auth.auth_successful()
-    session, headers, base_url = auth.get_session()
-    tasks_api = TasksAPI(session, headers, base_url)
+class TestTaskManagement:
 
-    task_type = "habit"  # Can be parameterized
-    task_text = f"TestTask_{generate_random_title()}"
+    @allure.title('Complete task lifecycle: create → verify type → verify text → delete')
+    @allure.severity(Severity.CRITICAL)
+    def test_complete_task_lifecycle(self, tasks_api):
+        # 1. Создание задач разных типов со случайными текстами
+        with allure.step("Create multiple tasks with different types and random texts"):
+            habit_task = tasks_api.create_task(task_type="habit")
+            todo_task = tasks_api.create_task(task_type="todo")
+            daily_task = tasks_api.create_task(task_type="daily")
+            reward_task = tasks_api.create_task(task_type="reward")
 
-    # 1. Create a new task with specified parameters - POST
-    try:
-        new_task = tasks_api.create_task(task_text=task_text, task_type=task_type)
-        task_id = new_task['id']
-        print(f"Created task - ID: {task_id}, Text: {task_text}, Expected Type: {task_type}")
+            print(f"Created tasks: "
+                  f"Habit({habit_task['id']}), "
+                  f"Todo({todo_task['id']}), "
+                  f"Daily({daily_task['id']}), "
+                  f"Reward({reward_task['id']})")
 
-        # Verify the returned task has correct type
-        assert new_task['type'] == task_type, \
-            f"Created task type {new_task['type']} doesn't match requested type {task_type}"
-    except Exception as e:
-        pytest.fail(f"Task creation failed: {str(e)}")
+        # 2. Проверка типов созданных задач
+        with allure.step("Verify task types are correct"):
+            tasks_api.verify_task_type(habit_task['id'], "habit")
+            tasks_api.verify_task_type(todo_task['id'], "todo")
+            tasks_api.verify_task_type(daily_task['id'], "daily")
+            tasks_api.verify_task_type(reward_task['id'], "reward")
+            print("All task types verified successfully")
 
-        # 2. Verify in task list - GET
-    try:
-        all_tasks = tasks_api.get_all_tasks()
+        # 3. Проверка текстов задач (что текст не пустой и соответствует формату)
+        with allure.step("Verify task texts are correct and not empty"):
+            tasks_api.verify_task_text(habit_task['id'], habit_task['text'])
+            tasks_api.verify_task_text(todo_task['id'], todo_task['text'])
+            tasks_api.verify_task_text(daily_task['id'], daily_task['text'])
+            tasks_api.verify_task_text(reward_task['id'], reward_task['text'])
+            print("All task texts verified successfully")
 
-        # Find our specific task
-        created_task = next((task for task in all_tasks if task['id'] == task_id), None)
-        assert created_task is not None, f"Task {task_id} not found in task list"
+        # 4. Удаление задач
+        with allure.step("Delete all created tasks"):
+            tasks_api.delete_task_by_id(habit_task['id'])
+            tasks_api.delete_task_by_id(todo_task['id'])
+            tasks_api.delete_task_by_id(daily_task['id'])
+            tasks_api.delete_task_by_id(reward_task['id'])
+            print("All tasks deleted successfully")
 
-        # Verify type matches
-        assert created_task['type'] == task_type, \
-            f"Task type in list {created_task['type']} doesn't match expected {task_type}"
+        # 5. Проверка, что задачи удалены
+        with allure.step("Verify all tasks are deleted"):
+            tasks_api.verify_task_exists(habit_task['id'], False)
+            tasks_api.verify_task_exists(todo_task['id'], False)
+            tasks_api.verify_task_exists(daily_task['id'], False)
+            tasks_api.verify_task_exists(reward_task['id'], False)
+            print("All tasks deletion verified successfully")
 
-        print(f"Verified task exists with correct type: {created_task['type']}")
-    except Exception as e:
-        pytest.fail(f"Task verification failed: {str(e)}")
+    @allure.title('Test task updating')
+    @allure.severity(Severity.NORMAL)
+    def test_task_updating(self, tasks_api):
+        task = tasks_api.create_task(task_type="todo")
+        new_text = "Обновленный текст задачи"
+        new_notes = "Тестовые заметки"
+        new_priority = 2
 
-@allure.tag('API')
-@allure.feature("Task Operations")
-@allure.title('Delete a task')
-@allure.label('owner', 'Victoria K')
-@allure.severity(Severity.CRITICAL)
-def test_task_create_delete():
-    auth = AuthAPI()
-    auth.auth_successful()
-    session, headers, base_url = auth.get_session()
-    tasks_api = TasksAPI(session, headers, base_url)
+        with allure.step("Update task properties"):
+            updated_task = tasks_api.update_task(
+                task['id'],
+                text=new_text,
+                notes=new_notes,
+                priority=new_priority
+            )
 
-    task_type = "todo"  # Can be parameterized
-    task_text = f"TestTask_{generate_random_title()}"
+        with allure.step("Verify task updates"):
+            assert updated_task['text'] == new_text, "Task text should be updated"
+            assert updated_task['notes'] == new_notes, "Task notes should be updated"
+            assert updated_task['priority'] == new_priority, "Task priority should be updated"
 
-    # 1. Create a new task with specified parameters - POST
-    try:
-        new_task = tasks_api.create_task(task_text=task_text, task_type=task_type)
-        task_id = new_task['id']
-        print(f"Created new task - ID: {task_id}, Name: {task_text}, Type: {task_type}")
-    except Exception as e:
-        pytest.fail(f"Failed to create task: {str(e)}")
+        tasks_api.delete_task_by_id(task['id'])
 
-    # 2. Verify task exists in the list - GET
-    try:
-        all_tasks = tasks_api.get_all_tasks()
-        task_exists = any(task['id'] == task_id for task in all_tasks)
-        assert task_exists, f"Created task {task_id} not found in task list"
-        print(f"Verified task {task_id} exists")
-    except Exception as e:
-        pytest.fail(f"Task verification failed: {str(e)}")
+    @allure.title('Test move task to top: create → verify → move to top → verify → delete')
+    @allure.severity(Severity.NORMAL)
+    def test_move_task_to_top(self, tasks_api):
+        # 1. Создание 3 задач одного типа
+        with allure.step("Create 3 tasks of 'todo' type with random texts"):
+            task3 = tasks_api.create_task(task_type="todo")
+            task2 = tasks_api.create_task(task_type="todo")
+            task1 = tasks_api.create_task(task_type="todo")
 
-    # 3. Delete the task - DELETE
-    try:
-        delete_response = tasks_api.delete_task_by_id(task_id)
-        assert delete_response.status_code == 200, \
-            f"Delete failed with status {delete_response.status_code}"
-        print(f"Successfully deleted task {task_id}")
-    except Exception as e:
-        pytest.fail(f"Task deletion failed: {str(e)}")
+            task_ids = [task1['id'], task2['id'], task3['id']]
+            print(f"Created 3 todo tasks: {task_ids}")
 
-    # 4. Verify task is deleted - GET
-    try:
-        updated_tasks = tasks_api.get_all_tasks()
-        still_exists = any(task['id'] == task_id for task in updated_tasks)
-        assert not still_exists, f"Task {task_id} still exists after deletion"
-        print(f"Verified task {task_id} is deleted")
-    except Exception as e:
-        pytest.fail(f"Deletion verification failed: {str(e)}")
+        # 2. Проверка типов всех задач
+        with allure.step("Verify all tasks have correct 'todo' type"):
+            for task_id in task_ids:
+                tasks_api.verify_task_type(task_id, "todo")
+            print("All tasks have correct 'todo' type")
 
-@allure.tag('API')
-@allure.feature("Task Operations")
-@allure.title('Move task to new position')
-@allure.label('owner', 'Victoria K')
-@allure.severity(Severity.NORMAL)
-def test_move_task_to_top():
-    auth = AuthAPI()
-    auth.auth_successful()
-    session, headers, base_url = auth.get_session()
-    tasks_api = TasksAPI(session, headers, base_url)
+        # 3. Запоминаем начальный порядок задач
+        with allure.step("Check initial task order"):
+            all_tasks = tasks_api.get_all_tasks()
+            initial_order = [task['id'] for task in all_tasks if task['id'] in task_ids]
+            print(f"Initial task order: {initial_order}")
 
-    task_type = "habit"  # Can be parameterized
-    task1 = tasks_api.create_task(task_text=f"Task1_{generate_random_title()}", task_type=task_type)
-    task2 = tasks_api.create_task(task_text=f"Task2_{generate_random_title()}", task_type=task_type)
-    task3 = tasks_api.create_task(task_text=f"Task3_{generate_random_title()}", task_type=task_type)
+        # 4. Перемещаем задачу 3 в начало (position 0)
+        with allure.step("Move task 3 to top (position 0)"):
+            tasks_api.move_task_to_position(task3['id'], 0)
+            print(f"Moved task {task3['id']} to position 0")
 
-    initial_tasks = tasks_api.get_all_tasks()
-    initial_order = [task['id'] for task in initial_tasks if task['id'] in [task1['id'], task2['id'], task3['id']]]
+        # 5. Проверяем, что задача 3 теперь первая
+        with allure.step("Verify task 3 is now first"):
+            updated_tasks = tasks_api.get_all_tasks()
+            updated_order = [task['id'] for task in updated_tasks if task['id'] in task_ids]
+            print(f"Order after moving to top: {updated_order}")
 
-    print(f"Initial order: {initial_order}")
+            assert updated_order[0] == task3['id'], \
+                f"Task 3 should be first, but order is: {updated_order}"
+            print("Task 3 successfully moved to top")
 
-    with allure.step(f"Move task {task3['id']} to position 0"):
-        move_response = tasks_api.move_task_to_position(task3['id'], 0)
-        assert move_response.status_code == 200
+        # 8. Удаляем все задачи
+        with allure.step("Delete all tasks"):
+            tasks_api.delete_task_by_id(task1['id'])
+            tasks_api.delete_task_by_id(task2['id'])
+            tasks_api.delete_task_by_id(task3['id'])
+            print("All tasks deleted")
 
-    updated_tasks = tasks_api.get_all_tasks()
-    updated_order = [task['id'] for task in updated_tasks if task['id'] in [task1['id'], task2['id'], task3['id']]]
+        # 9. Проверяем, что все задачи удалены
+        with allure.step("Verify all tasks are deleted"):
+            for task_id in task_ids:
+                tasks_api.verify_task_exists(task_id, False)
+            print("All tasks deletion verified")
 
-    print(f"Updated order: {updated_order}")
+    @allure.title('Test move task to bottom: create → verify → move to bottom → verify → delete')
+    @allure.severity(Severity.NORMAL)
+    def test_move_task_to_bottom(self, tasks_api):
+        # 1. Создание 3 задач одного типа
+        with allure.step("Create 3 tasks of 'todo' type with random texts"):
+            task3 = tasks_api.create_task(task_type="todo")
+            task2 = tasks_api.create_task(task_type="todo")
+            task1 = tasks_api.create_task(task_type="todo")
 
-    assert updated_order[0] == task3['id'], f"Task3 should be first, but got: {updated_order}"
-    print(f"Task moved to beginning successfully.")
+            task_ids = [task1['id'], task2['id'], task3['id']]
+            print(f"Created 3 todo tasks: {task_ids}")
 
-    tasks_api.delete_task_by_id(task1['id'])
-    tasks_api.delete_task_by_id(task2['id'])
-    tasks_api.delete_task_by_id(task3['id'])
+        # 2. Проверка типов всех задач
+        with allure.step("Verify all tasks have correct 'todo' type"):
+            for task_id in task_ids:
+                tasks_api.verify_task_type(task_id, "todo")
+            print("All tasks have correct 'todo' type")
 
-# добавить проверку на удаление задач
+        # 3. Запоминаем начальный порядок задач
+        with allure.step("Check initial task order"):
+            all_tasks = tasks_api.get_all_tasks()
+            initial_order = [task['id'] for task in all_tasks if task['id'] in task_ids]
+            print(f"Initial task order: {initial_order}")
 
-# ПОЧЕМУ ПОРЯДОК НЕ ПОМЕНЯЛСЯ?
-# PASSED [100%]
-# Initial order: ['c599f0fe-4e21-4982-81fd-ea22476d4a5f', '8942c471-605d-4589-9e51-caf8d8b86b49', 'c8f8bb52-3523-4f82-8255-f262f005491e']
-# Updated order: ['c599f0fe-4e21-4982-81fd-ea22476d4a5f', '8942c471-605d-4589-9e51-caf8d8b86b49', 'c8f8bb52-3523-4f82-8255-f262f005491e']
-# Task moved to beginning successfully.
+        # 4. Перемещаем задачу 1 в конец (position -1)
+        with allure.step("Move task 1 to bottom (position -1)"):
+            tasks_api.move_task_to_position(task1['id'], -1)
+            print(f"Moved task {task1['id']} to position -1")
 
+        # 5. Проверяем, что задача 1 теперь последняя
+        with allure.step("Verify task 1 is now last"):
+            final_tasks = tasks_api.get_all_tasks()
+            final_order = [task['id'] for task in final_tasks if task['id'] in task_ids]
+            print(f"Order after moving to bottom: {final_order}")
 
-@allure.tag('API')
-@allure.feature("Task Operations")
-@allure.title('Move task to new position')
-@allure.label('owner', 'Victoria K')
-@allure.severity(Severity.NORMAL)
-def test_move_task_to_bottom():
-    auth = AuthAPI()
-    auth.auth_successful()
-    session, headers, base_url = auth.get_session()
-    tasks_api = TasksAPI(session, headers, base_url)
+            assert final_order[-1] == task1['id'], \
+                f"Task 1 should be last, but order is: {final_order}"
+            print("Task 1 successfully moved to bottom")
 
-    task_type = "todo"  # Can be parameterized
-    task1 = tasks_api.create_task(task_text=f"Task1_{generate_random_title()}", task_type=task_type)
-    task2 = tasks_api.create_task(task_text=f"Task2_{generate_random_title()}", task_type=task_type)
-    task3 = tasks_api.create_task(task_text=f"Task3_{generate_random_title()}", task_type=task_type)
+        # 8. Удаляем все задачи
+        with allure.step("Delete all tasks"):
+            tasks_api.delete_task_by_id(task1['id'])
+            tasks_api.delete_task_by_id(task2['id'])
+            tasks_api.delete_task_by_id(task3['id'])
+            print("All tasks deleted")
 
-    initial_tasks = tasks_api.get_all_tasks()
-    initial_order = [task['id'] for task in initial_tasks if task['id'] in [task1['id'], task2['id'], task3['id']]]
+        # 9. Проверяем, что все задачи удалены
+        with allure.step("Verify all tasks are deleted"):
+            for task_id in task_ids:
+                tasks_api.verify_task_exists(task_id, False)
+            print("All tasks deletion verified")
 
-    print(f"Initial order: {initial_order}")
+    @allure.title('Test task creation with custom text and type verification')
+    @allure.severity(Severity.NORMAL)
+    def test_task_creation_with_custom_text(self, tasks_api):
+        custom_text = "Важная задача на понедельник"
+        task = tasks_api.create_task(task_text=custom_text, task_type="daily")
+        tasks_api.verify_task_type(task['id'], "daily")
+        tasks_api.verify_task_text(task['id'], custom_text)
+        tasks_api.delete_task_by_id(task['id'])
+        tasks_api.verify_task_exists(task['id'], False)
 
-    with allure.step(f"Move task {task3['id']} to position 0"):
-        move_response = tasks_api.move_task_to_position(task1['id'], -1)
-        assert move_response.status_code == 200
-
-    updated_tasks = tasks_api.get_all_tasks()
-    updated_order = [task['id'] for task in updated_tasks if task['id'] in [task1['id'], task2['id'], task3['id']]]
-
-    print(f"Updated order: {updated_order}")
-
-    assert updated_order[-1] == task1['id'], f"Task1 should be at the bottom, but got: {updated_order}"
-    print(f"Task moved to the bottom successfully.")
-
-    tasks_api.delete_task_by_id(task1['id'])
-    tasks_api.delete_task_by_id(task2['id'])
-    tasks_api.delete_task_by_id(task3['id'])
-
-# ПОЧЕМУ ПОРЯДОК НЕ ПОМЕНЯЛСЯ?
-# PASSED [100%]
-# Initial order: ['d5fce4a2-4d14-41a7-9bea-5cc40f3b7443', '685325c7-d340-4efa-b37e-166f8a09b8e0', '2a178289-3fc8-4c8f-99cf-d0cf8e50a4b8']
-# Updated order: ['d5fce4a2-4d14-41a7-9bea-5cc40f3b7443', '685325c7-d340-4efa-b37e-166f8a09b8e0', '2a178289-3fc8-4c8f-99cf-d0cf8e50a4b8']
-# Task moved to the bottom successfully.
+    @allure.title('Parameterized test for all task types')
+    @allure.severity(Severity.NORMAL)
+    @pytest.mark.parametrize("task_type", ["habit", "todo", "daily", "reward"])
+    def test_all_task_types_parameterized(self, tasks_api, task_type):
+        task = tasks_api.create_task(task_type=task_type)
+        tasks_api.verify_task_type(task['id'], task_type)
+        assert task['text'].startswith("TestTask_"), \
+            f"Task text should start with 'TestTask_': {task['text']}"
+        tasks_api.delete_task_by_id(task['id'])
+        tasks_api.verify_task_exists(task['id'], False)

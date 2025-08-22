@@ -68,6 +68,7 @@ class AddTaskButton:
             lambda elements: any(value in el.text for el in elements)
         )
 
+
 class ProfileMenu:
     # --- Locators ---
     PROFILE_MENU_TOGGLE = 'div.habitica-menu-dropdown[role="button"] div.habitica-menu-dropdown-toggle'
@@ -104,4 +105,3 @@ class ProfileMenu:
     @allure.step("Click on a menu item")
     def click_menu_item(self, value: str):
         self.profile_menu_items.element_by(have.text(value)).should(be.visible).click()
-
