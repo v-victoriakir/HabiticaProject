@@ -6,11 +6,32 @@
 
 ---
 
+## Список проверок, реализованных в автотестах:
+
+### UI-тесты
+
+- [x] Регистрация пользователя (успешная и неуспешная)
+- [x] Авторизация пользователя (успешная и неуспешная)
+- [x] Работа валидации в формах регистрации и авторизации
+- [x] Проверка жизненного цикла задачи (создание -> проверка -> удаление -> проверка)
+- [x] Выход из аккаунта
+
+### API-тесты
+
+- [x] Авторизация пользователя (успешная и неуспешная)
+- [x] Проверка жизненного цикла всех типов задач (создание -> проверка типа/текста -> удаление -> проверка)
+- [x] Параметризированный тест на жизненный цикл всех типов задач
+- [x] Редактирование задачи
+- [x] Изменение позиции задачи в списке (move to top/bottom)
+
+----
+
 ## Проект реализован с использованием:
 
 <img src="media/icons/python-original.svg" width="50"> <img src="media/icons/pytest.png" width="50"> <img src="media/icons/selene.png" width="50"> <img src="media/icons/selenoid.png" width="50"> <img src="media/icons/jenkins.png" width="50"> <img src="media/icons/allure_report.png" width="50"> <img src="media/icons/allure_testops.png" width="50"> <img src="media/icons/jira.png" width="50"> <img src="media/icons/tg.png" width="50">
 
 - Язык: `Python`
+- Тесты: WEB UI, API
 - Для написания UI-тестов используется фреймворк `Selene`, "обёртка" вокруг `Selenium WebDriver`
 - Библиотека модульного тестирования: `PyTest`
 - `Jenkins` выполняет удаленный запуск тестов.
@@ -32,9 +53,6 @@ HabiticaProject/
 │       ├── auth.py                             # Методы авторизации
 │       └── tasks.py                            # Методы управления задачами
 │   └── ui/
-│        ├──mobile_pages/    
-│           ├── 
-│           └──
 │        └──web_pages/                 
 │           ├── dashboard_page.py               # Дашборд задач в аккаунте
 │           ├── login_page.py                   # Страница авторизации
@@ -43,9 +61,6 @@ HabiticaProject/
 │       ├──api_test/                            # API Тесты
 │           ├── test_auth.py                    # Тесты формы авторизации
 │           └── test_task_management.py         # Тесты на управление задачами
-│       ├──mobile_tests/                        # MOBILE Тесты
-│           ├── 
-│           └──
 │       └──ui.tests/                            # UI Тесты
 │           ├── conftest.py                     # Конфигурация pytest
 │           ├── test_add_task.py                # Тесты на добавление задач 
@@ -59,14 +74,6 @@ HabiticaProject/
 ```
 
 ---
-
-## Список проверок, реализованных в автотестах:
-
-### UI-тесты
-
-- [x] Регистрация пользователя (успешная и неуспешная)
-- [x] Авторизация пользователя (успешная и неуспешная)
-- [x] Работа валидации в формах регистрации и авторизации
 
 ## Особенности фреймворка
 
@@ -91,6 +98,29 @@ HabiticaProject/
 - Возможность запуска в headless режиме
 
 ---
+----
+
+### Локальный запуск
+> Перед запуском в корне проекта создать файл .env с содержимым:
+```
+SELENOID_LOGIN={selenoid login}
+SELENOID_PASS={selenoid password}
+SELENOID_URL={selenoid server}
+HABITICA_BASE_URL=https://habitica.com/api/v3
+HABITICA_X_CLIENT={x_client of your test Habitica account}
+HABITICA_X_API_USER={x_api_user of your test Habitica account}
+HABITICA_USERNAME={username of your test Habitica account}
+HABITICA_EMAIL={email of your test Habitica account}
+HABITICA_PASSWORD={password of your test Habitica account}
+```
+
+> Для локального запуска с дефолтными настройками необходимо выполнить:
+```
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pytest tests/web
+```
 
 ## Allure отчет
 

@@ -55,6 +55,17 @@ class TestTaskManagement:
             tasks_api.verify_task_exists(reward_task['id'], False)
             print("All tasks deletion verified successfully")
 
+    @allure.title('Parameterized test for all task types')
+    @allure.severity(Severity.NORMAL)
+    @pytest.mark.parametrize("task_type", ["habit", "todo", "daily", "reward"])
+    def test_all_task_types_parameterized(self, tasks_api, task_type):
+        task = tasks_api.create_task(task_type=task_type)
+        tasks_api.verify_task_type(task['id'], task_type)
+        assert task['text'].startswith("TestTask_"), \
+            f"Task text should start with 'TestTask_': {task['text']}"
+        tasks_api.delete_task_by_id(task['id'])
+        tasks_api.verify_task_exists(task['id'], False)
+
     @allure.title('Test task updating')
     @allure.severity(Severity.NORMAL)
     def test_task_updating(self, tasks_api):
@@ -192,13 +203,3 @@ class TestTaskManagement:
         tasks_api.delete_task_by_id(task['id'])
         tasks_api.verify_task_exists(task['id'], False)
 
-    @allure.title('Parameterized test for all task types')
-    @allure.severity(Severity.NORMAL)
-    @pytest.mark.parametrize("task_type", ["habit", "todo", "daily", "reward"])
-    def test_all_task_types_parameterized(self, tasks_api, task_type):
-        task = tasks_api.create_task(task_type=task_type)
-        tasks_api.verify_task_type(task['id'], task_type)
-        assert task['text'].startswith("TestTask_"), \
-            f"Task text should start with 'TestTask_': {task['text']}"
-        tasks_api.delete_task_by_id(task['id'])
-        tasks_api.verify_task_exists(task['id'], False)

@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from selene import browser
 from selenium.webdriver.chrome.options import Options
 
-from utils import attach
+from utils import web_attach
 
 
 @pytest.fixture(scope="session", autouse=True)
