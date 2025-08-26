@@ -1,4 +1,5 @@
 import allure
+import pytest
 from allure_commons.types import Severity
 
 from faker import Faker
@@ -8,82 +9,32 @@ from model.ui.web_pages.login_page import LoginPage
 
 fake = Faker()
 
-@allure.tag('web')
+@allure.tag('Web')
 @allure.feature("Add Task")
 @allure.title('Create a task of Habit type')
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.CRITICAL)
-def test_add_habit():
+@pytest.mark.parametrize("task_type", [
+    ('Habit'),
+    ('Daily'),
+    ('To Do'),
+    ('Reward')
+])
+def test_add_task(task_type):
     random_title = fake.sentence(nb_words=3).rstrip('.')
-
     tasks = AddTaskButton()
     login = LoginPage()
 
-    login.login_page_open()
-    login.login_with_email()
-    login.login_checked()
-    tasks.click_add_task_btn()
-    tasks.pick_task('Habit')
-    tasks.name_a_task(random_title)
-    tasks.click_create_btn()
-    tasks.check_task_in_list(random_title)
+    with allure.step("Open login page and authenticate"):
+        login.login_page_open()
+        login.login_with_email()
+        login.login_checked()
 
-@allure.tag('web')
-@allure.feature("Add Task")
-@allure.title('Create a task of Daily type')
-@allure.label('owner', 'Victoria K')
-@allure.severity(Severity.CRITICAL)
-def test_add_daily():
-    random_title = fake.sentence(nb_words=3).rstrip('.')
+    with allure.step(f"Create {task_type} task with random title"):
+        tasks.click_add_task_btn()
+        tasks.pick_task(task_type)
+        tasks.name_a_task(random_title)
+        tasks.click_create_btn()
 
-    tasks = AddTaskButton()
-    login = LoginPage()
-
-    login.login_page_open()
-    login.login_with_email()
-    login.login_checked()
-    tasks.click_add_task_btn()
-    tasks.pick_task('Daily')
-    tasks.name_a_task(random_title)
-    tasks.click_create_btn()
-    tasks.check_task_in_list(random_title)
-
-@allure.tag('web')
-@allure.feature("Add Task")
-@allure.title('Create a task of To Do type')
-@allure.label('owner', 'Victoria K')
-@allure.severity(Severity.CRITICAL)
-def test_add_to_do():
-    random_title = fake.sentence(nb_words=3).rstrip('.')
-
-    tasks = AddTaskButton()
-    login = LoginPage()
-
-    login.login_page_open()
-    login.login_with_email()
-    login.login_checked()
-    tasks.click_add_task_btn()
-    tasks.pick_task('To Do')
-    tasks.name_a_task(random_title)
-    tasks.click_create_btn()
-    tasks.check_task_in_list(random_title)
-
-@allure.tag('web')
-@allure.feature("Add Task")
-@allure.title('Create a task of Reward type')
-@allure.label('owner', 'Victoria K')
-@allure.severity(Severity.CRITICAL)
-def test_add_reward():
-    random_title = fake.sentence(nb_words=3).rstrip('.')
-
-    tasks = AddTaskButton()
-    login = LoginPage()
-
-    login.login_page_open()
-    login.login_with_email()
-    login.login_checked()
-    tasks.click_add_task_btn()
-    tasks.pick_task('Reward')
-    tasks.name_a_task(random_title)
-    tasks.click_create_btn()
-    tasks.check_task_in_list(random_title)
+    with allure.step("Verify task was created successfully"):
+        tasks.check_task_in_list(task_type)

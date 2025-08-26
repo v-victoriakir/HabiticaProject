@@ -29,7 +29,7 @@ def generate_invalid_long_username():
                 combined_username):  # ставим длину username >= 20 символов
             return combined_username
 
-@allure.tag('web')
+@allure.tag('Web')
 @allure.feature("Registration")
 @allure.title('Successful sign up')
 @allure.label('owner', 'Victoria K')
@@ -49,7 +49,7 @@ def test_form_submitted():
     signup_form.submit_form()
     signup_form.registered_welcome_modal()
 
-@allure.tag('web')
+@allure.tag('Web')
 @allure.feature("Registration")
 @allure.title('Validation on required fields not filled')
 @allure.label('owner', 'Victoria K')
@@ -68,7 +68,7 @@ def test_validation_on_required_fields():
     signup_form.submit_form()
     signup_form.check_if_required_fields_not_filled()
 
-@allure.tag('web')
+@allure.tag('Web')
 @allure.feature("Registration")
 @allure.title('Validation on invalid username')
 @allure.label('owner', 'Victoria K')
@@ -87,7 +87,7 @@ def test_validation_on_invalid_long_username():
     signup_form.fill_password_again([password])
     signup_form.check_if_username_is_long()
 
-@allure.tag('web')
+@allure.tag('Web')
 @allure.feature("Registration")
 @allure.title('Validation on invalid password')
 @allure.label('owner', 'Victoria K')
@@ -106,7 +106,7 @@ def test_validation_on_invalid_short_password():
     signup_form.fill_password_again([password])
     signup_form.check_if_password_is_short()
 
-@allure.tag('web')
+@allure.tag('Web')
 @allure.feature("Registration")
 @allure.title('Availability of the Log In form')
 @allure.label('owner', 'Victoria K')
