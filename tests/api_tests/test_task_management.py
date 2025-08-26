@@ -7,7 +7,7 @@ from allure_commons.types import Severity
 @allure.label('owner', 'Victoria K')
 class TestTaskManagement:
 
-    @allure.title('Complete task lifecycle: create → verify type → verify text → delete')
+    @allure.title('Test task lifecycle: create → verify type → verify text → delete')
     @allure.severity(Severity.CRITICAL)
     def test_complete_task_lifecycle(self, tasks_api):
         # 1. Создание задач разных типов со случайными текстами
@@ -55,7 +55,7 @@ class TestTaskManagement:
             tasks_api.verify_task_exists(reward_task['id'], False)
             print("All tasks deletion verified successfully")
 
-    @allure.title('Parameterized test for all task types')
+    @allure.title('Test task lifecycle - parameterized test')
     @allure.severity(Severity.NORMAL)
     @pytest.mark.parametrize("task_type", ["habit", "todo", "daily", "reward"])
     def test_all_task_types_parameterized(self, tasks_api, task_type):

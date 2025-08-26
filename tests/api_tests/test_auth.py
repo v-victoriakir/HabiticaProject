@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 @allure.tag('API')
-@allure.feature("Auth")
+@allure.feature("API_auth")
 @allure.title('Test login works with correct username and password')
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.BLOCKER)
@@ -32,7 +32,7 @@ def test_successful_login():
     print("Successful login test passed")
 
 @allure.tag('API')
-@allure.feature("Auth")
+@allure.feature("API_auth")
 @allure.title('Test login with completely invalid credentials')
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.CRITICAL)
@@ -47,7 +47,7 @@ def test_unsuccessful_login_with_nonexistent_user():
     print("Invalid credentials test passed - correctly rejected with 401")
 
 @allure.tag('API')
-@allure.feature("Auth")
+@allure.feature("API_auth")
 @allure.title('Test login with invalid password')
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.CRITICAL)
@@ -62,7 +62,7 @@ def test_unsuccessful_login_with_wrong_password():
     print("Wrong password test passed - correctly rejected with 401")
 
 @allure.tag('API')
-@allure.feature("Auth")
+@allure.feature("API_auth")
 @allure.title('Test login with empty credentials')
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.CRITICAL)

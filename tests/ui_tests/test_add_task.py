@@ -11,7 +11,7 @@ fake = Faker()
 
 @allure.tag('Web')
 @allure.feature("Add Task")
-@allure.title('Create a task of Habit type')
+@allure.title('Create a task')
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.CRITICAL)
 @pytest.mark.parametrize("task_type", [
