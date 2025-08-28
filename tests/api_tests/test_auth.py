@@ -7,11 +7,6 @@ from allure_commons.types import Severity
 from dotenv import load_dotenv
 load_dotenv()
 
-pytestmark = [
-    allure.label('layer', 'api'),
-    allure.suite('API'),
-]
-
 @allure.tag('API')
 @allure.feature("API_auth")
 @allure.title('Test login works with correct username and password')

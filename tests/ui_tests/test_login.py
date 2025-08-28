@@ -4,11 +4,6 @@ from allure_commons.types import Severity
 from model.ui.web_pages.login_page import LoginPage
 from model.ui.web_pages.dashboard_page import ProfileMenu
 
-pytestmark = [
-    allure.label('layer', 'web'),
-    allure.suite('Web'),
-]
-
 @allure.tag('Web')
 @allure.feature("WEB_auth")
 @allure.title('Successful authorisation with email')

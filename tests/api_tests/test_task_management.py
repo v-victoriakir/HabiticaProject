@@ -2,11 +2,6 @@ import pytest
 import allure
 from allure_commons.types import Severity
 
-pytestmark = [
-    allure.label('layer', 'api'),
-    allure.suite('API'),
-]
-
 @allure.tag('API')
 @allure.feature("Task Operations")
 @allure.label('owner', 'Victoria K')
