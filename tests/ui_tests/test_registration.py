@@ -29,6 +29,11 @@ def generate_invalid_long_username():
                 combined_username):  # ставим длину username >= 20 символов
             return combined_username
 
+pytestmark = [
+    allure.label('layer', 'web'),
+    allure.suite('Web'),
+]
+
 @allure.tag('Web')
 @allure.feature("Registration")
 @allure.title('Successful sign up')

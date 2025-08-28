@@ -9,6 +9,11 @@ from model.ui.web_pages.login_page import LoginPage
 
 fake = Faker()
 
+pytestmark = [
+    allure.label('layer', 'web'),
+    allure.suite('Web'),
+]
+
 @allure.tag('Web')
 @allure.feature("Add Task")
 @allure.title('Create a task')
