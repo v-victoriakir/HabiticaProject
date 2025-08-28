@@ -120,6 +120,27 @@ source .venv/bin/activate
 pip install -r requirements.txt
 pytest tests/web
 ```
+---
+
+### Удаленный запуск автотестов выполняется на сервере Jenkins
+> [Ссылка на проект в Jenkins](https://jenkins.autotests.cloud/job/HabiticaProject/)
+
+#### Параметры сборки
+
+- `SUITE` - набор тестов(WEB или API тесты. Tests - все)
+- `BROWSER_VERSION` - версия браузера (браузер `Chrome`) для Web тестов
+
+#### Для запуска автотестов в Jenkins
+
+1. Открыть [проект](https://jenkins.autotests.cloud/job/HabiticaProject/)
+2. Выбрать пункт `Build with Parameters`
+3. Выбрать модуль
+4. Указать версию браузера (только для Web тестов)
+5. Указать комментарий
+6. Нажать кнопку `Build`
+7. Результат запуска сборки можно посмотреть в отчёте Allure
+
+---
 
 ## Allure отчет
 

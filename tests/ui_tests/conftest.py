@@ -21,26 +21,26 @@ def browser_config(request):
     browser.config.window_width = 1920
     browser.config.type_by_js = True
 
-    # options = Options()
-    # selenoid_capabilities = {
-    #     "browserName": "chrome",
-    #     "browserVersion": "128.0",
-    #     "selenoid:options": {
-    #         "enableVNC": True,
-    #         "enableVideo": True
-    #     }
-    # }
-    #
-    # selenoid_login = os.getenv("SELENOID_LOGIN")
-    # selenoid_pass = os.getenv("SELENOID_PASS")
-    # selenoid_url = os.getenv("SELENOID_URL")
-    #
-    # options.capabilities.update(selenoid_capabilities)
-    # driver = webdriver.Remote(
-    #     command_executor=f"https://{selenoid_login}:{selenoid_pass}@{selenoid_url}/wd/hub",
-    #     options=options)
-    #
-    # browser.config.driver = driver
+    options = Options()
+    selenoid_capabilities = {
+        "browserName": "chrome",
+        "browserVersion": "128.0",
+        "selenoid:options": {
+            "enableVNC": True,
+            "enableVideo": True
+        }
+    }
+
+    selenoid_login = os.getenv("SELENOID_LOGIN")
+    selenoid_pass = os.getenv("SELENOID_PASS")
+    selenoid_url = os.getenv("SELENOID_URL")
+
+    options.capabilities.update(selenoid_capabilities)
+    driver = webdriver.Remote(
+        command_executor=f"https://{selenoid_login}:{selenoid_pass}@{selenoid_url}/wd/hub",
+        options=options)
+
+    browser.config.driver = driver
 
     yield
 
