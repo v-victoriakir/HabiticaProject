@@ -1,10 +1,9 @@
-import os
-
 import pytest
-from selenium import webdriver
 from dotenv import load_dotenv
 from selene import browser
+from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import os
 
 from utils import web_attach
 

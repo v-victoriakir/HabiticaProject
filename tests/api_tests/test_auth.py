@@ -1,11 +1,13 @@
 import os
-from model.api.auth import AuthAPI
 
 import allure
 from allure_commons.types import Severity
-
 from dotenv import load_dotenv
+
+from model.api.auth import AuthAPI
+
 load_dotenv()
+
 
 @allure.tag('API')
 @allure.feature("API_auth")
@@ -31,6 +33,7 @@ def test_successful_login():
         "Auth header API token should match response API token"
     print("Successful login test passed")
 
+
 @allure.tag('API')
 @allure.feature("API_auth")
 @allure.title('Test login with completely invalid credentials')
@@ -46,6 +49,7 @@ def test_unsuccessful_login_with_nonexistent_user():
         f"Expected 401 for invalid credentials, got {response.status_code}"
     print("Invalid credentials test passed - correctly rejected with 401")
 
+
 @allure.tag('API')
 @allure.feature("API_auth")
 @allure.title('Test login with invalid password')
@@ -60,6 +64,7 @@ def test_unsuccessful_login_with_wrong_password():
     assert response.status_code == 401, \
         f"Expected 401 for wrong password, got {response.status_code}"
     print("Wrong password test passed - correctly rejected with 401")
+
 
 @allure.tag('API')
 @allure.feature("API_auth")

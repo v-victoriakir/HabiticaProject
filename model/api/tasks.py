@@ -1,9 +1,8 @@
 import allure
 from dotenv import load_dotenv
-
 from faker import Faker
-
 from jsonschema import validate
+
 from model.api.schemas import schemas
 
 load_dotenv()
@@ -41,7 +40,6 @@ class TasksAPI:
             f"Failed to create the {task_text} task, got {response.status_code}\n"
             f"Response text: {response.text}"
         )
-        # validate(response.json(),schema=schemas.post_create_task)
         task_data = response.json()['data']
         self.created_tasks.append(task_data['id'])  # Добавляем в список созданных
         return task_data
@@ -66,7 +64,7 @@ class TasksAPI:
             f"Failed delete the task {task_id}, got {response.status_code}\n"
             f"Response text: {response.text}"
         )
-        # validate(response.json(),schema=schemas.delete_task)
+        validate(response.json(), schema=schemas.delete_task)
         if task_id in self.created_tasks:
             self.created_tasks.remove(task_id)
         return response
@@ -80,7 +78,7 @@ class TasksAPI:
             f"Failed move the task {task_id} to the position {new_position}, got {response.status_code}\n"
             f"Response text: {response.text}"
         )
-        # validate(response.json(),schema=schemas.post_move_task)
+        validate(response.json(), schema=schemas.post_move_task)
         return response
 
     @allure.step("Verify task type")

@@ -1,5 +1,3 @@
-import os
-
 from faker import Faker
 
 fake = Faker()
@@ -15,11 +13,11 @@ class LoginPage:
         self.login_nav_button = browser.element('a[href="/login"]')
         self.username = browser.element("#usernameInput")
         self.password = browser.element("#passwordInput")
-        self.login_submit_button = browser.element('//button[contains(text(), "Login")]')
+        self.login_submit_button = browser.element('button[type=submit]')
         self.header = browser.element("#app-header")
 
     @allure.step("Open login page")
-    def login_page_open(self):
+    def open(self):
         browser.open("/")
         self.login_nav_button.click()
         self.login_submit_button.should(be.visible)
@@ -42,57 +40,22 @@ class LoginPage:
 
     @allure.step("Click on the submit btn")
     def submit_form(self):
-        self.login_submit_button.click()
+        self.login_submit_button.should(be.clickable).click()
         return self
 
-    @allure.step("Submit form using username")
-    def login_with_username(self):
-        habitica_username = os.getenv("HABITICA_USERNAME")
-        habitica_password = os.getenv("HABITICA_PASSWORD")
-
-        self.fill_username(habitica_username)
-        self.fill_password(habitica_password)
-        self.submit_form()
-        return self
-
-    @allure.step("Submit form using email")
-    def login_with_email(self):
-        habitica_email = os.getenv("HABITICA_EMAIL")
-        habitica_password = os.getenv("HABITICA_PASSWORD")
-
-        self.fill_username(habitica_email)
-        self.fill_password(habitica_password)
-        self.submit_form()
-        return self
-
-    @allure.step("Submit form using username with invalid password")
-    def invalid_login_with_username(self):
-        habitica_username = os.getenv("HABITICA_USERNAME")
-        random_password = fake.password(length=9)
-
-        self.fill_username(habitica_username)
-        self.fill_password(random_password)
-        self.submit_form()
-        return self
-
-    @allure.step("Submit form using email with invalid password")
-    def invalid_login_with_email(self):
-        habitica_email = os.getenv("HABITICA_EMAIL")
-        random_password = fake.password(length=9)
-
-        self.fill_username(habitica_email)
-        self.fill_password(random_password)
+    @allure.step("Login with credentials")
+    def login(self, username, password):
+        self.fill_username(username)
+        self.fill_password(password)
         self.submit_form()
         return self
 
     @allure.step("Check if login is successful")
-    def login_checked(self):
-        habitica_username = os.getenv("HABITICA_USERNAME")
-
-        self.header.should(be.visible)
-        self.header.should(have.text(habitica_username))
+    def should_be_logged_in(self, expected_username):
+        self.header.with_(timeout=10).should(be.visible)
+        self.header.should(have.text(expected_username))
+        return self
 
     @allure.step("Check if validation on username/password works")
-    def validation_checked(self):
+    def should_have_validation_error(self):
         browser.element('.notifications').should(be.visible)
-        browser.element('.notifications').should(have.text("your email address / username or password is incorrect."))

@@ -1,30 +1,38 @@
 import allure
 from allure_commons.types import Severity
 
-from model.ui.web_pages.login_page import LoginPage
-from model.ui.web_pages.dashboard_page import ProfileMenu
+from model.ui.steps.login_steps import LoginSteps
 
-@allure.tag('Web')
-@allure.feature("WEB_auth")
-@allure.title('Successful authorisation with email')
-@allure.label('owner', 'Victoria K')
-@allure.severity(Severity.BLOCKER)
-def test_successful_login_using_email():
-    login_form = LoginPage()
-    login_form.login_page_open()
-    login_form.login_with_email()
-    login_form.login_checked()
 
 @allure.tag('Web')
 @allure.feature("WEB_auth")
 @allure.title('Successful authorisation with username')
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.BLOCKER)
+def test_successful_login_with_email():
+    login_steps = LoginSteps()
+
+    with allure.step("Login with valid username and password"):
+        login_steps.login_with_username()
+
+    with allure.step("Verify login is successful"):
+        login_steps.verify_login_successful()
+
+
+@allure.tag('Web')
+@allure.feature("WEB_auth")
+@allure.title('Successful authorisation with email')
+@allure.label('owner', 'Victoria K')
+@allure.severity(Severity.BLOCKER)
 def test_successful_login_using_username():
-    login_form = LoginPage()
-    login_form.login_page_open()
-    login_form.login_with_username()
-    login_form.login_checked()
+    login_steps = LoginSteps()
+
+    with allure.step("Login with valid email and password"):
+        login_steps.login_with_email()
+
+    with allure.step("Verify login is successful"):
+        login_steps.verify_login_successful()
+
 
 @allure.tag('Web')
 @allure.feature("WEB_auth")
@@ -32,10 +40,14 @@ def test_successful_login_using_username():
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.CRITICAL)
 def test_validation_on_wrong_credentials_using_email():
-    login_form = LoginPage()
-    login_form.login_page_open()
-    login_form.invalid_login_with_email()
-    login_form.validation_checked()
+    login_steps = LoginSteps()
+
+    with allure.step("Open login page and attempt login with invalid password using email"):
+        login_steps.invalid_login_with_email()
+
+    with allure.step("Verify validation error appears"):
+        login_steps.verify_validation_error()
+
 
 @allure.tag('Web')
 @allure.feature("WEB_auth")
@@ -43,23 +55,10 @@ def test_validation_on_wrong_credentials_using_email():
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.CRITICAL)
 def test_validation_on_wrong_credentials_using_username():
-    login_form = LoginPage()
-    login_form.login_page_open()
-    login_form.invalid_login_with_username()
-    login_form.validation_checked()
+    login_steps = LoginSteps()
 
-@allure.tag('Web')
-@allure.feature("WEB_auth")
-@allure.title('Successful log out')
-@allure.label('owner', 'Victoria K')
-@allure.severity(Severity.CRITICAL)
-def test_log_out():
-    login_form = LoginPage()
-    profile_menu = ProfileMenu()
+    with allure.step("Open login page and attempt login with invalid password using username"):
+        login_steps.invalid_login_with_username()
 
-    login_form.login_page_open()
-    login_form.login_with_email()
-    login_form.login_checked()
-    profile_menu.open_profile_menu()
-    profile_menu.click_menu_item('Log Out')
-#     НЕ РАБОТАЕТ, НЕ МОГУ ВЫЗВАТЬ PROFILE MENU В DASHBOARD_PAGE.PY
+    with allure.step("Verify validation error appears"):
+        login_steps.verify_validation_error()

@@ -2,11 +2,10 @@ import os
 
 import allure
 import requests
-
-from jsonschema import validate
-from model.api.schemas import schemas
-
 from dotenv import load_dotenv
+from jsonschema import validate
+
+from model.api.schemas import schemas
 
 load_dotenv()
 
@@ -39,7 +38,6 @@ class AuthAPI:
             f"Login failed: expected 200, got {response.status_code}\n"
             f"Response text: {response.text}"
         )
-        # validate(response.json(),schema=schemas.post_auth_successful)
 
         self.auth_headers = {
             "x-api-user": response.json()['data']['id'],
@@ -67,5 +65,5 @@ class AuthAPI:
                 'Content-Type': 'application/json'
             }
         )
-        # validate(response.json(),schema=schemas.post_auth_unsuccessful)
+        validate(response.json(), schema=schemas.post_auth_unsuccessful)
         return response

@@ -1,4 +1,5 @@
 import pytest
+
 from model.api.auth import AuthAPI
 from model.api.tasks import TasksAPI
 

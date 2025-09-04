@@ -1,12 +1,13 @@
 import re
+
 import allure
 from allure_commons.types import Severity
-
 from faker import Faker
 
 from model.ui.web_pages.main_page import MainPage
 
 fake = Faker()
+
 
 def generate_valid_username():
     pattern = re.compile(r'^[a-z0-9_-]+$')
@@ -29,63 +30,43 @@ def generate_invalid_long_username():
                 combined_username):  # ставим длину username >= 20 символов
             return combined_username
 
+
 @allure.tag('Web')
 @allure.feature("Registration")
 @allure.title('Successful sign up')
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.BLOCKER)
 def test_form_submitted():
-    username = generate_valid_username()
     email = fake.email()
     password = fake.password(length=9)
 
     signup_form = MainPage()
     signup_form.open()
 
-    signup_form.fill_username(username)
     signup_form.fill_email(email)
     signup_form.fill_password(password)
     signup_form.fill_password_again([password])
     signup_form.submit_form()
+    signup_form.policy_checkbox_click()
+    signup_form.get_started()
     signup_form.registered_welcome_modal()
 
+
 @allure.tag('Web')
 @allure.feature("Registration")
-@allure.title('Validation on required fields not filled')
+@allure.title('Validation on the email input')
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.CRITICAL)
-def test_validation_on_required_fields():
-    username = generate_valid_username()
-    email = fake.email()
-    password = fake.password(length=9)
+def test_validation_on_email():
+    email = 'blabla'
 
     signup_form = MainPage()
     signup_form.open()
 
-    signup_form.fill_username(username)
     signup_form.fill_email(email)
-    signup_form.fill_password(password)
-    signup_form.submit_form()
-    signup_form.check_if_required_fields_not_filled()
+    signup_form.check_validation()
+    signup_form.check_submit_button_disabled()
 
-@allure.tag('Web')
-@allure.feature("Registration")
-@allure.title('Validation on invalid username')
-@allure.label('owner', 'Victoria K')
-@allure.severity(Severity.CRITICAL)
-def test_validation_on_invalid_long_username():
-    username = generate_invalid_long_username()
-    email = fake.email()
-    password = fake.password(length=9)
-
-    signup_form = MainPage()
-    signup_form.open()
-
-    signup_form.fill_username(username)
-    signup_form.fill_email(email)
-    signup_form.fill_password(password)
-    signup_form.fill_password_again([password])
-    signup_form.check_if_username_is_long()
 
 @allure.tag('Web')
 @allure.feature("Registration")
@@ -93,18 +74,37 @@ def test_validation_on_invalid_long_username():
 @allure.label('owner', 'Victoria K')
 @allure.severity(Severity.CRITICAL)
 def test_validation_on_invalid_short_password():
-    username = generate_valid_username()
     email = fake.email()
     password = fake.password(length=7)
 
     signup_form = MainPage()
     signup_form.open()
 
-    signup_form.fill_username(username)
     signup_form.fill_email(email)
     signup_form.fill_password(password)
-    signup_form.fill_password_again([password])
-    signup_form.check_if_password_is_short()
+    signup_form.check_validation()
+    signup_form.check_submit_button_disabled()
+
+
+@allure.tag('Web')
+@allure.feature("Registration")
+@allure.title('Validation repeat password')
+@allure.label('owner', 'Victoria K')
+@allure.severity(Severity.CRITICAL)
+def test_validation_on_required_fields():
+    email = fake.email()
+    password = fake.password(length=9)
+    wrong_password = 'bb'
+
+    signup_form = MainPage()
+    signup_form.open()
+
+    signup_form.fill_email(email)
+    signup_form.fill_password(password)
+    signup_form.fill_password_again(wrong_password)
+    signup_form.check_validation()
+    signup_form.check_submit_button_disabled()
+
 
 @allure.tag('Web')
 @allure.feature("Registration")

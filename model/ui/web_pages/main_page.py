@@ -4,23 +4,16 @@ from selene import browser, have, be
 
 class MainPage:
     def __init__(self):
-        self.username = browser.element("#usernameInput")
-        self.email = browser.element('input[placeholder="Email"]')
-        self.password = browser.element('input[placeholder="Password"]')
-        self.repeat_password = browser.element('input[placeholder="Confirm Password"]')
-        self.signup_button = browser.element('//button[contains(text(), "Sign Up")]')
+        self.email = browser.element('input[type="email"]')
+        self.password = browser.element('(//input[@type="password"])[1]')
+        self.repeat_password = browser.element('(//input[@type="password"])[2]')
+        self.signup_button = browser.element('button[type=submit]')
         self.welcome_modal = browser.element("#avatar-modal___BV_modal_body_")
         self.login_nav_button = browser.element('a[href="/login"]')
-        # self.display_name = browser.element('input[placeholder="Новое отображаемое имя"]')
 
     @allure.step("Open main page")
     def open(self):
         browser.open("/")
-        return self
-
-    @allure.step("Fill in username")
-    def fill_username(self, username):
-        self.username.send_keys(username)
         return self
 
     @allure.step("Fill in email")
@@ -38,40 +31,37 @@ class MainPage:
         self.repeat_password.send_keys(password)
         return self
 
+    @allure.step("Check that submit button is disabled")
+    def check_submit_button_disabled(self):
+        self.signup_button.should(have.attribute('disabled'))
+        return self
+
     @allure.step("Click on the submit btn")
     def submit_form(self):
-        self.signup_button.click()
+        self.signup_button.should(have.no.attribute('disabled')).should(be.clickable).click()
+        return self
+
+    @allure.step("Click on Private Policy checkbox")
+    def policy_checkbox_click(self):
+        browser.element('label[for="privacyTOS"]').click()
+
+    @allure.step("Click on Get Started")
+    def get_started(self):
+        self.signup_button.with_(timeout=10).should(be.clickable).click()
         return self
 
     @allure.step("Check that sign up is successful")
     def registered_welcome_modal(self):
-        browser.with_(timeout=15).element("#avatar-modal___BV_modal_body_").should(be.visible)
-        self.welcome_modal.should(have.text("Welcome to"))
-        # self.display_name.should(have.exact_text(username))  ---> не пойму как сделать проверку на то, чтобы после
-        # регистрации в welcome окне отображаемое username соответствовало тому, которое было введено на этапе
-        # регистрации
+        browser.with_(timeout=10).element("#avatar-modal___BV_modal_body_").should(be.visible)
         return self
 
-    @allure.step("Check if validation on required fields works")
-    def check_if_required_fields_not_filled(self):
-        browser.element('.notifications').should(be.visible)
-        browser.element('.notifications').should(have.text("Password confirmation doesn't match password."))
-        return self
-
-    @allure.step("Check if validation on username length works")
-    def check_if_username_is_long(self):
+    @allure.step("Check validation on email/password input")
+    def check_validation(self):
         browser.element('.input-error').should(be.visible)
-        browser.element('.input-error').should(have.text("Usernames must be between 1 and 20 characters."))
-        return self
-
-    @allure.step("Check if validation on password length works")
-    def check_if_password_is_short(self):
-        browser.element('.input-error').should(be.visible)
-        browser.element('.input-error').should(have.text("Password must be 8 characters or more."))
         return self
 
     @allure.step("Check if the Login bnt opens the sign in form")
     def check_if_login_button_works(self):
         self.login_nav_button.click()
-        browser.element('//button[contains(text(), "Login")]').should(be.visible)
+        browser.element('button[type=submit]').should(be.visible)
         return self

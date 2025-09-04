@@ -1,6 +1,7 @@
-import pytest
 import allure
+import pytest
 from allure_commons.types import Severity
+
 
 @allure.tag('API')
 @allure.feature("Task Operations")
@@ -202,4 +203,3 @@ class TestTaskManagement:
         tasks_api.verify_task_text(task['id'], custom_text)
         tasks_api.delete_task_by_id(task['id'])
         tasks_api.verify_task_exists(task['id'], False)
-
