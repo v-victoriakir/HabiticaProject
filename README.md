@@ -63,7 +63,7 @@ HabiticaProject/
             ├── conftest.py                     # Конфигурация pytest
 │           ├── test_auth.py                    # Тесты формы авторизации
 │           └── test_task_management.py         # Тесты на управление задачами
-│       └──ui.tests/                            # UI Тесты
+│       └──ui_tests/                            # UI Тесты
 │           ├── conftest.py                     # Конфигурация pytest
 │           ├── test_add_task.py                # Тесты на добавление задач 
 │           ├── test_login.py                   # Тесты формы авторизации    
