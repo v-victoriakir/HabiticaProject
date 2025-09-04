@@ -52,12 +52,15 @@ HabiticaProject/
 │       ├── auth.py                             # Методы авторизации
 │       └── tasks.py                            # Методы управления задачами
 │   └── ui/
-│        └──web_pages/                 
+│       ├── steps
+            └── login_steps.py                  # Шаги для вариантов авторизации
+        └──web_pages/                 
 │           ├── dashboard_page.py               # Дашборд задач в аккаунте
 │           ├── login_page.py                   # Страница авторизации
 │           └── main_page.py                    # Главная страница
 ├── tests/                              
 │       ├──api_test/                            # API Тесты
+            ├── conftest.py                     # Конфигурация pytest
 │           ├── test_auth.py                    # Тесты формы авторизации
 │           └── test_task_management.py         # Тесты на управление задачами
 │       └──ui.tests/                            # UI Тесты
@@ -65,8 +68,9 @@ HabiticaProject/
 │           ├── test_add_task.py                # Тесты на добавление задач 
 │           ├── test_login.py                   # Тесты формы авторизации    
 │           └── test_registration.py            # Тесты формы регистрации
-├── utils/                                      # Утилиты
-│   └── attach.py                               # Функции для Allure
+├── utils/                                      # Функции для Allure
+    ├── api_logger.py
+│   └── web_attach.py                           
 ├── .env                                        # Переменные окружения
 ├── requirements.txt                            # Зависимости проекта
 └── pytest.ini                                  # Конфигурация pytest
